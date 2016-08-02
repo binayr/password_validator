@@ -46,6 +46,18 @@ class ValidatePassword(object):
         """Checking Intger for each element in password via map."""
         return True if x.isdigit() else False
 
+    def check_upper(self):
+        return True if True in map(self.is_upper, self._password) else False
+
+    def is_upper(self, x):
+        return True if x.isupper() else False
+
+    def check_symbol(self):
+        return True if True in map(self.is_symbol, self._password) else False
+
+    def is_symbol(self, x):
+        return True if x in self.__ALLOWED_SYMBOLS else False
+
     def validate(self):
         """Validate method for the util to sum up the result."""
         # Check for Length Validation return False if fails.
@@ -57,4 +69,14 @@ class ValidatePassword(object):
             self._flag = self.check_digit()
             if not self._flag: return self._flag, "Password should contain atleast one Integer."
 
-        return True if self._flag else False
+        # Check for Integer Validation return False if fails.
+        if self.__MIN_UPPER:
+            self._flag = self.check_upper()
+            if not self._flag: return self._flag, "Password should contain atleast one Uppercase Charachter."
+
+        # Check for Integer Validation return False if fails.
+        if self.__MIN_SYMBOL:
+            self._flag = self.check_symbol()
+            if not self._flag: return self._flag, "Password should contain atleast one Special charachter."
+
+        return True, None if self._flag else False
